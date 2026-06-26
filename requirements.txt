@@ -1,0 +1,14 @@
+# Runtime dependencies for the deployed dashboard (app.py).
+# Streamlit Community Cloud installs these automatically on deploy.
+streamlit
+matplotlib
+
+# Optional - enables the `optimal` matcher (OR-Tools CP-SAT ceiling/oracle).
+# Left out of the default deploy because the dashboard degrades gracefully
+# without it, and pinning it can break the cloud build on newer Python.
+# Uncomment to enable, then make sure runtime.txt pins a Python version that
+# has ortools wheels.
+# ortools
+
+# The core testbed (run_mvp.py + tests) runs on the standard library alone.
+# For tests:  pip install pytest
