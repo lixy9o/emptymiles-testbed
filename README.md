@@ -45,6 +45,35 @@ The MVP compares `none` (every order = a dedicated trip + empty return leg) agai
 `greedy` (piggyback each order onto the cheapest feasible existing route), then sweeps
 order density to show how match rate and CO₂ move with network liquidity.
 
+## HTTP API
+
+The same harness is exposed as a small FastAPI service (`api.py`), so other code - or a
+real evaluation pipeline - can call it over HTTP instead of importing the library:
+
+| Method | Path | What |
+|---|---|---|
+| GET | `/health` | liveness check |
+| GET | `/strategies` | list strategies (`optimal` needs OR-Tools) |
+| POST | `/evaluate` | generate a synthetic scenario from a `Config` and benchmark strategies on it - no data needed |
+| POST | `/match` | POST your own scenario (routes + orders), run one strategy, get the assignment mapping + metrics back |
+
+Run it locally:
+
+```bash
+pip install -r requirements-api.txt
+uvicorn api:app --reload          # interactive docs at http://localhost:8000/docs
+```
+
+Or containerised:
+
+```bash
+docker build -t emptymiles-api .
+docker run -p 8000:8000 emptymiles-api
+```
+
+`POST /match` is the bridge to real operations: the same metrics that score the synthetic
+sandbox score your data, on identical, reproducible accounting.
+
 ## Layout
 
 ```
@@ -52,6 +81,8 @@ run_mvp.py                     # entry point (stdlib only)
 run_explain.py                 # Module-C demo: prints reason codes per match
 run_forecast.py                # Module-B demo: empty-leg hotspot forecast + skill
 app.py                         # Streamlit dashboard (needs streamlit + matplotlib)
+api.py                         # FastAPI service: /evaluate, /match (needs requirements-api.txt)
+Dockerfile                     # container image for the API
 conftest.py                    # puts repo root on sys.path for pytest
 src/emptymiles_testbed/
   config.py                    # Config dataclass (seeded, JSON-loadable)

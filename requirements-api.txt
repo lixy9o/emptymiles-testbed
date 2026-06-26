@@ -1,0 +1,6 @@
+# Runtime dependencies for the HTTP API (api.py), used by the Dockerfile.
+# The core testbed has no third-party deps; these are only for serving it over HTTP.
+fastapi
+uvicorn[standard]
+
+# For running the API tests locally (tests/test_api.py):  pip install httpx pytest
