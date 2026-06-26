@@ -1,5 +1,7 @@
 # EmptyMiles Matching Testbed
 
+**Live demo:** https://emptymiles-testbed-h2e9azwsmykxwhbnvxcyne.streamlit.app
+
 An **offline evaluation harness** for delivery-matching strategies. It generates a
 synthetic-but-physically-honest logistics world (orders + planned routes), lets you
 plug in any matching strategy behind a single interface, and reports the metrics that
